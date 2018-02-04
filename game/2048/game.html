@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<!--verion by ycy: PPT架构师,BUG生成工程师,ifelse程序员,API调用专家-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			td{
+				align-content: center;
+				height: 50px;
+				width: 50px;
+				border: 2px solid blue;
+				font-size: x-large;
+				text-align: center;
+			};
+			table{
+				align-items: center;
+			};
+			.tm{
+				border: 2px solid white;
+			};
+			.nc{
+			};
+			button{
+				
+			};
+			input{
+				width: 100%;
+				height: 100%;
+			};
+		</style>
+	</head>
+	<body>
+		<table cellspacing="0" table>
+			<tr align="center">
+				<td class="tm"></td>
+				<td colspan="4" class="nc">
+					<input type="button" id="up" value="向上" align="center" /><!--style="width: 100px; height: 100px;"-->
+					<!--<button type="button" id='up'>向上</button>-->
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="4" class="nc">
+					<button type="button" id='left'>向左</button>
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td rowspan="4" class="nc">
+					<button type="button" id='right'>向右</button>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr align="center">
+				<td class="tm"></td>
+				<td colspan="4" class="nc">
+					<button type="button" id='down'>向下</button>
+				</td>
+			</tr>
+		</table>
+		<div>
+			<span>您的得分是:</span>
+			<span id ='score'>0</span>
+		</div>
+		<script src="jquery-1.11.0.min.js" ></script>
+		<script type="text/javascript">
+			$('.tm').prop('style','border: 2px solid white');//...去掉左上左下边框
+			var aimtrs = $('td:not(.tm):not(.nc)'); //取出中间16格,全局可用
+			setnewnum();setnewnum();
+			function isempty(rd16){
+				return $(aimtrs[rd16]).val()=='';
+			};
+			//随机加入一个新的2或4
+			function setnewnum(){
+				if(!checkresult()){
+					alert("You Can't!");
+					return;
+				};
+				for (var i = 0 ; i < 1 ; i ++) {
+					var rd16 = Math.floor(Math.random()*16);
+					var rd4 = Math.floor(Math.random()*4);
+					var r2o4 = rd4>2?4:2;
+					if(isempty(rd16)){
+						$(aimtrs[rd16]).val(r2o4);
+						aimtrs[rd16].innerHTML = aimtrs[rd16].value;
+					}else{
+						i--;
+					}
+				}
+			};
+			//触发某一方向的移动
+			$('#up').click(function(){
+				var a =moveele([0,4,8,12]);
+				var b =moveele([1,5,9,13]);
+				var c =moveele([2,6,10,14]);
+				var d =moveele([3,7,11,15]);
+				if(a||b||c||d){
+					setnewnum();
+				};
+			});
+			$('#down').click(function(){
+				var a =moveele([12,8,4,0]);
+				var b =moveele([13,9,5,1]);
+				var c =moveele([14,10,6,2]);
+				var d =moveele([15,11,7,3]);
+				if(a||b||c||d){
+					setnewnum();
+				};
+			});
+			$('#left').click(function(){
+				var a =moveele([0,1,2,3]);
+				var b =moveele([4,5,6,7]);
+				var c =moveele([8,9,10,11]);
+				var d =moveele([12,13,14,15]);
+				if(a||b||c||d){
+					setnewnum();
+				};
+			});
+			$('#right').click(function(){
+				var a =moveele([3,2,1,0]);
+				var b =moveele([7,6,5,4]);
+				var c =moveele([11,10,9,8]);
+				var d =moveele([15,14,13,12]);
+				if(a||b||c||d){
+					setnewnum();
+				};
+			});
+			//键盘控制
+			$(window).keydown(function(e){
+				var e = e||event;
+				var currkey = e.keyCode||e.which||e.charCode;
+				switch (currkey){
+					case 38:
+						var a =moveele([0,4,8,12]);
+						var b =moveele([1,5,9,13]);
+						var c =moveele([2,6,10,14]);
+						var d =moveele([3,7,11,15]);
+						if(a||b||c||d){
+							setnewnum();
+						};
+						break;
+					case 40:
+						var a =moveele([12,8,4,0]);
+						var b =moveele([13,9,5,1]);
+						var c =moveele([14,10,6,2]);
+						var d =moveele([15,11,7,3]);
+						if(a||b||c||d){
+							setnewnum();
+						};
+						break;
+					case 37:
+						var a =moveele([0,1,2,3]);
+						var b =moveele([4,5,6,7]);
+						var c =moveele([8,9,10,11]);
+						var d =moveele([12,13,14,15]);
+						if(a||b||c||d){
+							setnewnum();
+						};
+						break;
+					case 39:
+						var a =moveele([3,2,1,0]);
+						var b =moveele([7,6,5,4]);
+						var c =moveele([11,10,9,8]);
+						var d =moveele([15,14,13,12]);
+						if(a||b||c||d){
+							setnewnum();
+						};
+						break;
+					default:
+						break;
+				}
+			});
+			//一组数向某一方向移动 i光标,j空的
+			function moveele(arr){
+				var dmove = false;
+				for(var i = 0, j=0; i<arr.length ; i++){
+					if((!isempty(arr[i]))&&i!=j){
+						if(isempty(arr[j])){
+							aimtrs[arr[j]].value=aimtrs[arr[i]].value;
+							aimtrs[arr[i]].value='';
+							aimtrs[arr[j]].innerHTML = aimtrs[arr[j]].value;
+							aimtrs[arr[i]].innerHTML = aimtrs[arr[i]].value;
+							dmove=true;
+						}else if(aimtrs[arr[j]].value==aimtrs[arr[i]].value){
+							aimtrs[arr[j]].value = aimtrs[arr[j]].value*2;
+							$('#score')[0].innerHTML=parseInt($('#score')[0].innerHTML)+ aimtrs[arr[j]].value;
+							aimtrs[arr[i]].value = '';
+							aimtrs[arr[j]].innerHTML = aimtrs[arr[j]].value;
+							aimtrs[arr[i]].innerHTML = aimtrs[arr[i]].value;
+							dmove=true;
+							j++;
+						}else if(i==j+1){
+							j++;
+						}else{
+							j++;
+							aimtrs[arr[j]].value=aimtrs[arr[i]].value;
+							aimtrs[arr[i]].value='';
+							aimtrs[arr[j]].innerHTML = aimtrs[arr[j]].value;
+							aimtrs[arr[i]].innerHTML = aimtrs[arr[i]].value;
+							dmove=true;
+						};
+					}
+				};
+				return dmove;
+			};
+			function checkresult(){
+				var res = false;
+				for (var i = 0; i < 15 ; i++) {
+					if(isempty(i)){
+						res = true ;
+						return res;
+					}
+				}
+				return res;
+			};
+		</script>
+	</body>
+</html>
